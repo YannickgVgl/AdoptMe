@@ -3,7 +3,7 @@
 namespace Yannickvgl\AdoptMe\Models;
 
 use Yannickvgl\AdoptMe\Models\DatabaseDB as DatabaseDB;
-
+use PDO;
 
 class ProprietaireModel
 {
@@ -15,28 +15,28 @@ class ProprietaireModel
     
     public static function getAll()
     {
-        $db = Database::getConnection();
+        $db = DatabaseDB::getConnection();
         $stmt = $db->query('SELECT * FROM Proprietaire');
         return $stmt->fetchAll(PDO::FETCH_OBJ);
     }
 
     public static function add($nom, $prenom, $email, $telephone)
     {
-        $db = Database::getConnection();
+        $db = DatabaseDB::getConnection();
         $stmt = $db->prepare('INSERT INTO Proprietaire (nom, prenom, email, telephone) VALUES (:nom, :prenom, :email, :telephone)');
         return $stmt->execute(['nom' => $nom, 'prenom' => $prenom, 'email' => $email, 'telephone' => $telephone]);
     }
 
     public static function update($id, $nom, $prenom, $email, $telephone)
     {
-        $db = Database::getConnection();
+        $db = DatabaseDB::getConnection();
         $stmt = $db->prepare('UPDATE Proprietaire SET nom = :nom, prenom = :prenom, email = :email, telephone = :telephone WHERE idProprietaire = :id');
         return $stmt->execute(['id' => $id, 'nom' => $nom, 'prenom' => $prenom, 'email' => $email, 'telephone' => $telephone]);
     }
 
     public static function delete($id)
     {
-        $db = Database::getConnection();
+        $db = DatabaseDB::getConnection();
         $stmt = $db->prepare('DELETE FROM Proprietaire WHERE idProprietaire = :id');
         return $stmt->execute(['id' => $id]);
     }

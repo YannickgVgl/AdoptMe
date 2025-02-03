@@ -7,6 +7,7 @@ use Slim\Views\PhpRenderer;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Yannickvgl\AdoptMe\Models\AnimalModel;
+use Yannickvgl\AdoptMe\Models\ProprietaireModel;
 
 class AnimalController
 {
@@ -15,12 +16,16 @@ class AnimalController
     {
         $animals = AnimalModel::getAll();
         $species = AnimalModel::getAllSpecies();
+
+        $proprietaires = ProprietaireModel::getAll();
+
+
         // Construire la structure de la page
         $dataLayout = ['title' => 'AdoptMe'];
         $phpView = new PhpRenderer(__DIR__ . '/../../views', $dataLayout);
         $phpView->setLayout("layout.php");
         // Construire le contenu de la page
-        return $phpView->render($response, 'animals.php', ['animals' => $animals, 'species' => $species]); //animals et species sont des variables utilisées dans le fichier animals.php
+        return $phpView->render($response, 'animals.php', ['animals' => $animals, 'species' => $species, 'proprietaires' => $proprietaires]);  //animals, species et proprietaires sont des variables utilisées dans le fichier animals.php
     }
     public function addAnimal(Request $request, Response $response, array $args): Response
     {

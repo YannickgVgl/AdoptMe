@@ -15,10 +15,14 @@ if (!isset($_SESSION['idEmploye'])) {
 }
 ?>
     <div class="container mt-5">
-        <div class="text-end mb-3">
+    <div class="text-end mb-3">
             <a href="/logout" class="btn btn-outline-danger">Se déconnecter</a>
         </div>
     <img src="./img/logo-transparentSVG.svg" alt="Logo AdoptMe" style="width: 500px; display: block; margin: auto;">
+    <div class="text-center mb-4">
+    <a href="/animals" class="btn btn-primary">Voir la liste des animaux</a>
+    <a href="/owners" class="btn btn-secondary">Voir la liste des propriétaires</a>
+    </div>
         <h1 class="text-center">Liste des Animaux du Refuge</h1>
         <div class="text-end mb-3">
             <!-- Bouton pour ouvrir la modale d'ajout d'un animal -->
@@ -100,7 +104,7 @@ if (!isset($_SESSION['idEmploye'])) {
                 <div class="modal fade" id="modalAdoptAnimal<?= $animal->idAnimal ?>" tabindex="-1">
                     <div class="modal-dialog">
                         <div class="modal-content">
-                            <form method="post" action="/adoptions/add">
+                            <form method="post" action="adoption/add">
                                 <div class="modal-header">
                                     <h5 class="modal-title">Enregistrer une adoption</h5>
                                     <button type="button" class="btn-close" data-bs-dismiss="modal"></button>

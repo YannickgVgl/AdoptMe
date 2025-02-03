@@ -2,6 +2,7 @@
 use Slim\Routing\RouteCollectorProxy;
 use Yannickvgl\AdoptMe\Controllers\LoginController;
 use Yannickvgl\AdoptMe\Controllers\AnimalController;
+use Yannickvgl\AdoptMe\Controllers\ProprietaireController;
 
 $app->get('/', [LoginController::class, 'login']);
 $app->post('/', [LoginController::class, 'validateLogin']);

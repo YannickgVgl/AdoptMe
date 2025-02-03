@@ -22,6 +22,15 @@
                         <h2 class="card-title text-center mb-4">Connexion</h2>
                         
                         <form action="/" method="POST">
+                        <?php if (!empty($errors)) : ?>
+                            <div class="alert alert-danger">
+                                <ul>
+                                    <?php foreach ($errors as $error) : ?>
+                                        <li><?= $error ?></li>
+                                    <?php endforeach; ?>
+                                </ul>
+                            </div>
+                        <?php endif; ?>
                             <div class="mb-3">
                                 <label for="nomUtilisateur" class="form-label">Nom d'utilisateur</label>
                                 <input type="text" class="form-control" id="nomUtilisateur" name="nomUtilisateur">
