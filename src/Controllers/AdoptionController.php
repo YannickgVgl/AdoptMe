@@ -3,33 +3,40 @@
 namespace Yannickvgl\AdoptMe\Controllers;
 
 use Slim\Views\PhpRenderer;
-
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
+use Yannickvgl\AdoptMe\Models\AdoptionModel;
+use Yannickvgl\AdoptMe\Models\ProprietaireModel;
 use Yannickvgl\AdoptMe\Models\AnimalModel;
+use Yannickvgl\AdoptMe\Models\EmployeModel;
 
-class AdoptionControllerController
+class AdoptionController
 {
+    
+    //this function is useless now but i still let it here for some reason
     public function showAdoption(Request $request, Response $response, array $args): Response
     {
         $proprietaires = ProprietaireModel::getAll();
+        $adoptions = AdoptionModel::getAll();
+        $animals = AnimalModel::getAll();
+        $employes = EmployeModel::getEmploye();
 
-
-        // Construire la structure de la page
-        $dataLayout = ['title' => 'AdoptMe'];
-        $phpView = new PhpRenderer(__DIR__ . '/../../views', $dataLayout);
-        $phpView->setLayout("layout.php");
-        // Construire le contenu de la page
-        return $phpView->render($response, 'animals.php', ['animals' => $animals, 'species' => $species, 'proprietaires' => $proprietaires]);  //animals, species et proprietaires sont des variables utilisées dans le fichier animals.php
-
+        $phpView = new PhpRenderer(__DIR__ . '/../../views');
+        return $phpView->render($response, 'animals.php', [
+            'animals' => $animals,
+            'proprietaires' => $proprietaires,
+            'adoptions' => $adoptions,
+            'employes' => $employes,
+            'species' => AnimalModel::getAllSpecies()
+        ]);
     }
 
-    //get the name of the owner then get the dâte of the adoption
     public function addAdoption(Request $request, Response $response, array $args): Response
     {
         $data = $request->getParsedBody();
-        AdoptionModel::add($data['idAnimal'], $data['idProprietaire'], $data['dateAdoption']);
 
-        return $phpView->render($response, 'animals.php', ['proprietaires' => $proprietaires]); 
+        AdoptionModel::add($data['dateAdoption'], $data['idEmploye'], $data['idAnimal'], $data['idProprietaire']);
+
+        return $response->withHeader('Location', '/animals')->withStatus(302);
     }
 }

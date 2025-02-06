@@ -44,7 +44,6 @@ class AnimalModel
         $stmt = $db->query('SELECT idEspece, nom FROM Espece');
         return $stmt->fetchAll(\PDO::FETCH_OBJ);
     }
-
     
     public static function add($nom, $dateNaissance, $sexe, $idEspece)
     {

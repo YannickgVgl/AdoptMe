@@ -3,8 +3,7 @@
 namespace Yannickvgl\AdoptMe\Models;
 
 use Yannickvgl\AdoptMe\Models\DatabaseDB as DatabaseDB;
-
-
+use PDO;
 
 class EmployeModel
 {
@@ -12,6 +11,14 @@ class EmployeModel
     public ?string $nomUtilisateur = null;
     public ?string $motDePasse = null;
     
+    public static function getAll()
+    {
+        $db = DatabaseDB::getConnection();
+        $stmt = $db->query('SELECT * FROM Employe');
+        return $stmt->fetchAll(\PDO::FETCH_OBJ);
+    }
+
+    // function to get all the employees by their username
     public static function getEmploye(string $nomUtilisateur)
     {
         $pdo = DatabaseDB::getConnection();

@@ -8,6 +8,8 @@ use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Yannickvgl\AdoptMe\Models\AnimalModel;
 use Yannickvgl\AdoptMe\Models\ProprietaireModel;
+use Yannickvgl\AdoptMe\Models\AdoptionModel;
+use Yannickvgl\AdoptMe\Models\EmployeModel;
 
 class AnimalController
 {
@@ -15,17 +17,26 @@ class AnimalController
     public function showAnimals(Request $request, Response $response, array $args): Response
     {
         $animals = AnimalModel::getAll();
+        $adoptedAnimals = AdoptionModel::getAllWithAdoption();
         $species = AnimalModel::getAllSpecies();
-
         $proprietaires = ProprietaireModel::getAll();
-
-
+        $adoptions = AdoptionModel::getAll();
+        $employes = EmployeModel::getAll();
+    
         // Construire la structure de la page
         $dataLayout = ['title' => 'AdoptMe'];
         $phpView = new PhpRenderer(__DIR__ . '/../../views', $dataLayout);
         $phpView->setLayout("layout.php");
-        // Construire le contenu de la page
-        return $phpView->render($response, 'animals.php', ['animals' => $animals, 'species' => $species, 'proprietaires' => $proprietaires]);  //animals, species et proprietaires sont des variables utilisées dans le fichier animals.php
+    
+        // Passer toutes les données nécessaires à la vue
+        return $phpView->render($response, 'animals.php', [
+            'animals' => $animals,
+            'species' => $species,
+            'proprietaires' => $proprietaires,
+            'adoptions' => $adoptions,  
+            'employes' => $employes,
+            'adoptedAnimals' => $adoptedAnimals  
+        ]);
     }
     public function addAnimal(Request $request, Response $response, array $args): Response
     {

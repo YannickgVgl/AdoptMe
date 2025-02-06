@@ -11,7 +11,7 @@ class ProprietaireModel
     public ?string $nom = null;
     public ?string $prenom = null;
     public ?string $email = null;
-    public ?string $telephone = null;
+    public ?string $numeroTelephone = null;
     
     public static function getAll()
     {
@@ -20,18 +20,36 @@ class ProprietaireModel
         return $stmt->fetchAll(PDO::FETCH_OBJ);
     }
 
-    public static function add($nom, $prenom, $email, $telephone)
+    public static function getAdoptedAnimals()
     {
         $db = DatabaseDB::getConnection();
-        $stmt = $db->prepare('INSERT INTO Proprietaire (nom, prenom, email, telephone) VALUES (:nom, :prenom, :email, :telephone)');
-        return $stmt->execute(['nom' => $nom, 'prenom' => $prenom, 'email' => $email, 'telephone' => $telephone]);
+        $stmt = $db->query('
+            SELECT 
+                a.idAnimal, 
+                a.nom, 
+                a.dateNaissance, 
+                a.sexe, 
+                e.nom AS especeNom, 
+                ad.dateAdoption 
+            FROM Animal a
+            JOIN Espece e ON a.idEspece = e.idEspece
+            LEFT JOIN Adoption ad ON a.idAnimal = ad.idAnimal
+        ');
+        return $stmt->fetchAll(PDO::FETCH_OBJ);
+    }   
+
+    public static function add($nom, $prenom, $email, $numeroTelephone)
+    {
+        $db = DatabaseDB::getConnection();
+        $stmt = $db->prepare('INSERT INTO Proprietaire (nom, prenom, email, numeroTelephone) VALUES (:nom, :prenom, :email, :numeroTelephone)');
+        return $stmt->execute(['nom' => $nom, 'prenom' => $prenom, 'email' => $email, 'numeroTelephone' => $numeroTelephone]);
     }
 
-    public static function update($id, $nom, $prenom, $email, $telephone)
+    public static function update($id, $nom, $prenom, $email, $numeroTelephone)
     {
         $db = DatabaseDB::getConnection();
-        $stmt = $db->prepare('UPDATE Proprietaire SET nom = :nom, prenom = :prenom, email = :email, telephone = :telephone WHERE idProprietaire = :id');
-        return $stmt->execute(['id' => $id, 'nom' => $nom, 'prenom' => $prenom, 'email' => $email, 'telephone' => $telephone]);
+        $stmt = $db->prepare('UPDATE Proprietaire SET nom = :nom, prenom = :prenom, email = :email, numeroTelephone = :numeroTelephone WHERE idProprietaire = :id');
+        return $stmt->execute(['id' => $id, 'nom' => $nom, 'prenom' => $prenom, 'email' => $email, 'numeroTelephone' => $numeroTelephone]);
     }
 
     public static function delete($id)

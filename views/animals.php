@@ -14,6 +14,8 @@ if (!isset($_SESSION['idEmploye'])) {
     exit;
 }
 ?>
+
+
     <div class="container mt-5">
     <div class="text-end mb-3">
             <a href="/logout" class="btn btn-outline-danger">Se déconnecter</a>
@@ -54,7 +56,21 @@ if (!isset($_SESSION['idEmploye'])) {
                         <!-- Bouton pour supprimer un animal -->
                         <a href="/animals/delete/<?= $animal->idAnimal ?>" class="btn btn-danger btn-sm">Supprimer</a>
                         <!-- Bouton pour enregistrer une adoption -->
-                        <button class="btn btn-success btn-sm" data-bs-toggle="modal" data-bs-target="#modalAdoptAnimal<?= $animal->idAnimal ?>">Adoption</button>
+                        <?php 
+                        $estAdopte = false;
+                        foreach ($adoptedAnimals as $adoptedAnimal) {
+                            if ($adoptedAnimal->idAnimal == $animal->idAnimal && !empty($adoptedAnimal->dateAdoption)) {
+                                $estAdopte = true;
+                                break;
+                            }
+                        }
+                        ?>
+                        <?php if ($estAdopte): ?>
+                            <button type="button" class="btn btn-sm" style="background-color: #ff69b4; color: white;" disabled>Je suis adopté youpii</button>
+                        <?php else: ?>
+                            <button type="button" class="btn btn-success btn-sm" data-bs-toggle="modal" data-bs-target="#modalAdoptAnimal<?= $animal->idAnimal ?>">Adoption</button>
+                        <?php endif; ?>
+                 
                     </td>
                 </tr>
 
@@ -100,38 +116,55 @@ if (!isset($_SESSION['idEmploye'])) {
                     </div>
                 </div>
 
-                <!-- Modale d'adoption -->
-                <div class="modal fade" id="modalAdoptAnimal<?= $animal->idAnimal ?>" tabindex="-1">
-                    <div class="modal-dialog">
-                        <div class="modal-content">
-                            <form method="post" action="adoption/add">
-                                <div class="modal-header">
-                                    <h5 class="modal-title">Enregistrer une adoption</h5>
-                                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                                </div>
-                                <div class="modal-body">
-                                    <input type="hidden" name="idAnimal" value="<?= $animal->idAnimal ?>">
-                                    <div class="mb-3">
-                                        <label for="idProprietaire<?= $animal->idAnimal ?>" class="form-label">Propriétaire</label>
-                                        <select class="form-select" id="idProprietaire<?= $animal->idAnimal ?>" name="idProprietaire" required>
-                                            <option value="">-- Sélectionner un propriétaire --</option>
-                                            <?php foreach ($proprietaires as $proprietaire): ?>
-                                            <option value="<?= $proprietaire->idProprietaire ?>"><?= htmlspecialchars($proprietaire->nom . ' ' . $proprietaire->prenom) ?></option>
-                                            <?php endforeach; ?>
-                                        </select>
-                                    </div>
-                                    <div class="mb-3">
-                                        <label for="dateAdoption<?= $animal->idAnimal ?>" class="form-label">Date d'adoption</label>
-                                        <input type="date" class="form-control" id="dateAdoption<?= $animal->idAnimal ?>" name="dateAdoption" required>
-                                    </div>
-                                </div>
-                                <div class="modal-footer">
-                                    <button type="submit" class="btn btn-primary">Enregistrer l'adoption</button>
-                                </div>
-                            </form>
+<!-- Modale d'adoption -->
+<div class="modal fade" id="modalAdoptAnimal<?= $animal->idAnimal ?>" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <form method="post" action="/adoption/add">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Enregistrer une adoption</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    </div>
+                    <div class="modal-body">
+                        <input type="hidden" name="idAnimal" value="<?= $animal->idAnimal ?>">
+
+                        <div class="mb-3">
+                            <label for="idProprietaire<?= $animal->idAnimal ?>" class="form-label">Propriétaire</label>
+                            <select class="form-select" id="idProprietaire<?= $animal->idAnimal ?>" name="idProprietaire" required>
+                                <option value="">-- Sélectionner un propriétaire --</option>
+                                <?php foreach ($proprietaires as $proprietaire): ?>
+                                    <option value="<?= $proprietaire->idProprietaire ?>">
+                                        <?= htmlspecialchars($proprietaire->nom . ' ' . $proprietaire->prenom) ?>
+                                    </option>
+                                <?php endforeach; ?>
+                            </select>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="idEmploye<?= $animal->idAnimal ?>" class="form-label">Employé responsable</label>
+                            <select class="form-select" name="idEmploye" required>
+                                <option value="">-- Sélectionner un employé --</option>
+                                <?php foreach ($employes as $employe): ?>
+                                    <option value="<?= htmlspecialchars($employe->idEmploye) ?>">
+                                        <?= htmlspecialchars($employe->nomUtilisateur) ?>
+                                    </option>
+                                <?php endforeach; ?>
+                            </select>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="dateAdoption<?= $animal->idAnimal ?>" class="form-label">Date d'adoption</label>
+                            <input type="date" class="form-control" id="dateAdoption<?= $animal->idAnimal ?>" name="dateAdoption" required>
                         </div>
                     </div>
-                </div>
+
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary">Enregistrer l'adoption</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
                 <?php endforeach; ?>
             </tbody>
         </table>
