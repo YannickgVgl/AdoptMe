@@ -22,7 +22,6 @@ class AnimalController
         $proprietaires = ProprietaireModel::getAll();
         $adoptions = AdoptionModel::getAll();
         $employes = EmployeModel::getAll();
-    
         // Construire la structure de la page
         $dataLayout = ['title' => 'AdoptMe'];
         $phpView = new PhpRenderer(__DIR__ . '/../../views', $dataLayout);
@@ -38,6 +37,7 @@ class AnimalController
             'adoptedAnimals' => $adoptedAnimals  
         ]);
     }
+    
     public function addAnimal(Request $request, Response $response, array $args): Response
     {
         $data = $request->getParsedBody();
