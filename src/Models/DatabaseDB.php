@@ -2,6 +2,12 @@
 
 namespace Yannickvgl\AdoptMe\Models;
 use PDO;
+
+/**
+ * Class DatabaseDB
+ * @package Yannickvgl\AdoptMe\Models
+ * This class is used to manage the connection to the database
+ */
 if (!class_exists('DatabaseDB')) {
     class DatabaseDB {
         // Proprieties of the class DatabaseDB for the connection to the database 
@@ -11,7 +17,11 @@ if (!class_exists('DatabaseDB')) {
         private static $password = "Super";
         private static $pdo = null;
         
-        // Connexion à la base de données
+        
+        /**
+         * This function is used to connect to the database
+         * @return PDO
+         */
         public static function getConnection()     
         {
             if (self::$pdo === null) {

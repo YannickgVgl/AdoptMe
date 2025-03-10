@@ -5,14 +5,30 @@ namespace Yannickvgl\AdoptMe\Models;
 use Yannickvgl\AdoptMe\Models\DatabaseDB;
 use PDO;
 
+/**
+ * Class AdoptionModel
+ * @package Yannickvgl\AdoptMe\Models
+ * This class is used to manage the adoptions
+ */
 class AdoptionModel
 {
+    /**
+     * @var int|null $idAdoption
+     * @var string|null $dateAdoption
+     * @var int|null $idEmploye
+     * @var int|null $idAnimal
+     * @var int|null $idProprietaire
+     * These are the attributes of the class
+     */
     public ?int $idAdoption = null;
     public ?string $dateAdoption = null;
     public ?int $idEmploye = null;
     public ?int $idAnimal = null;
     public ?int $idProprietaire = null;
     
+    /**
+     * This function is used to get all the adoptions with the animals, the employees and the owners
+     */
     public static function getAll()
     {
         $db = DatabaseDB::getConnection();
@@ -38,6 +54,9 @@ class AdoptionModel
         return $stmt->fetchAll(PDO::FETCH_OBJ);
     }
     
+    /**
+     * This function is used to get all the adoptions with the animals
+     */
     public static function getAllWithAdoption()
     {
         $db = DatabaseDB::getConnection();
@@ -56,6 +75,13 @@ class AdoptionModel
         return $stmt->fetchAll(PDO::FETCH_OBJ);
     }
 
+    /**
+     * This function is used to add an adoption
+     * @param string $dateAdoption
+     * @param int $idEmploye
+     * @param int $idAnimal
+     * @param int $idProprietaire
+     */
     public static function add($dateAdoption, $idEmploye, $idAnimal, $idProprietaire)
     {
         $db = DatabaseDB::getConnection();
@@ -68,7 +94,10 @@ class AdoptionModel
         ]);
     }    
     
-
+    /**
+     * This function is used to delete an adoption
+     * @param int $idAdoption
+     */
     public static function delete($idAdoption)
     {
         $db = DatabaseDB::getConnection();

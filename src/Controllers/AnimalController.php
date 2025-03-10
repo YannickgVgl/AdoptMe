@@ -11,9 +11,19 @@ use Yannickvgl\AdoptMe\Models\ProprietaireModel;
 use Yannickvgl\AdoptMe\Models\AdoptionModel;
 use Yannickvgl\AdoptMe\Models\EmployeModel;
 
+/**
+ * Class AnimalController
+ * @package Yannickvgl\AdoptMe\Controllers
+ * This class is used to manage the animals
+ */
 class AnimalController
 {
-    // Vos autres fonctions
+    /**
+     * This function is used to show the animals page
+     * @param Request $request
+     * @param Response $response
+     * @param array $args
+     */
     public function showAnimals(Request $request, Response $response, array $args): Response
     {
         $animals = AnimalModel::getAll();
@@ -38,6 +48,12 @@ class AnimalController
         ]);
     }
     
+    /**
+     * This function is used to add an animal
+     * @param Request $request
+     * @param Response $response
+     * @param array $args
+     */
     public function addAnimal(Request $request, Response $response, array $args): Response
     {
         $data = $request->getParsedBody();
@@ -45,12 +61,24 @@ class AnimalController
         return $response->withHeader('Location', '/animals')->withStatus(302);
     }
 
+    /**
+     * This function is used to delete an animal
+     * @param Request $request
+     * @param Response $response
+     * @param array $args
+     */
     public function deleteAnimal(Request $request, Response $response, array $args): Response
     {
         AnimalModel::delete($args['id']);
         return $response->withHeader('Location', '/animals')->withStatus(302);
     }
 
+    /**
+     * This function is used to update an animal
+     * @param Request $request
+     * @param Response $response
+     * @param array $args
+     */
     public function updateAnimal(Request $request, Response $response, array $args): Response
     {
         $data = $request->getParsedBody();

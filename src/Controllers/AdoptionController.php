@@ -10,10 +10,20 @@ use Yannickvgl\AdoptMe\Models\ProprietaireModel;
 use Yannickvgl\AdoptMe\Models\AnimalModel;
 use Yannickvgl\AdoptMe\Models\EmployeModel;
 
+
+/**
+ * Class AdoptionController
+ * @package Yannickvgl\AdoptMe\Controllers
+ * This class is used to manage the adoptions
+ */
 class AdoptionController
 {
-    
-    //this function is useless now but i still let it here for some reason
+    /**
+     * This function is used to show the adoption page
+     * @param Request $request
+     * @param Response $response
+     * @param array $args
+     */
     public function showAdoption(Request $request, Response $response, array $args): Response
     {
         $proprietaires = ProprietaireModel::getAll();
@@ -31,6 +41,12 @@ class AdoptionController
         ]);
     }
 
+    /**
+     * This function is used to add an adoption
+     * @param Request $request
+     * @param Response $response
+     * @param array $args
+     */
     public function addAdoption(Request $request, Response $response, array $args): Response
     {
         $data = $request->getParsedBody();
